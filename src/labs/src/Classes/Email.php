@@ -1,12 +1,14 @@
 <?php
-
 namespace ZendCourse;
 
-class Email {
+use Exception;
 
-    const WARNING_EMPTY_SUBJECT = "Are you sure you want to send without a subject? (type 'y' to continue) ";
-    const ERROR_NO_RECIPIENTS = "Please specify at least one recipient.";
-    const ERROR_EMPTY_BODY = "Email body cannot be blank.";
+class Email 
+{
+
+    const WARNING_EMPTY_SUBJECT = 'Are you sure you want to send without a subject? (type "y" to continue) ';
+    const ERROR_NO_RECIPIENTS = 'Please specify at least one recipient.';
+    const ERROR_EMPTY_BODY = 'Email body cannot be blank.';
 
     public string $subject;
     public string $body;
@@ -15,7 +17,8 @@ class Email {
         protected array $recipients,
         string $subject = '',
         string $body = ''
-    ) {
+    ) 
+    {
         $this->subject = $subject;
         $this->body = $body;
     }
@@ -39,32 +42,34 @@ class Email {
 
     public function send() {
 
-        echo "---NEW MESSAGE---" . PHP_EOL;
+		$txt = '';
+        $txt .= '---NEW MESSAGE---' . PHP_EOL;
 
         // throw error if there are no recipients
         if(count($this->recipients) < 1) {
-            throw new \Error(self::ERROR_NO_RECIPIENTS);
+            throw new Exception(self::ERROR_NO_RECIPIENTS);
         }
 
         if(empty($this->body)) {
-            throw new \Error(self::ERROR_EMPTY_BODY);
+            throw new Exception(self::ERROR_EMPTY_BODY);
         }
 
         // warn user if the subject field is empty
         if(empty($this->subject)) {
             $continue = readline(self::WARNING_EMPTY_SUBJECT);
-            if($continue !== "y") exit;
+            if($continue !== 'y') exit;
         }
 
         // mock sending the email
-        echo "Message sent to " . implode(", ", $this->recipients) . ".";
-        echo PHP_EOL;
-        echo "Subject: " . $this->subject;
-        echo PHP_EOL;
-        echo "Message: " . $this->body;
+        $txt .= 'Message sent to ' . implode(', ', $this->recipients) . '.';
+        $txt .= PHP_EOL;
+        $txt .= 'Subject: ' . $this->subject;
+        $txt .= PHP_EOL;
+        $txt .= 'Message: ' . $this->body;
 
         // extra space
-        echo str_repeat(PHP_EOL, 2);
+        $txt .= str_repeat(PHP_EOL, 2);
+        return $txt;
     }
 
 }
@@ -74,17 +79,17 @@ class Email {
 
 try {
 
-    $email_subject = "Introductions";
-    $email_body = "Hello, how are you?";
-    $email = new Email(["bart@test.com"]);
-    $email
+    $email_subject = 'Introductions';
+    $email_body = 'Hello, how are you?';
+    $email = new Email(['bart@test.com']);
+    echo $email
         ->setSubject($email_subject)
         ->setBody($email_body)
-        ->addRecipients(["marge@test.com", "lisa@test.com"])
+        ->addRecipients(['marge@test.com', 'lisa@test.com'])
         ->send();
 
-} catch (\Error $e) {
-    echo "An error occurred: " . $e->getMessage();
+} catch (Exception $e) {
+    echo 'An error occurred: ' . $e->getMessage();
 }
 
 
@@ -92,17 +97,17 @@ try {
 
 try {
 
-    $email_subject = "";
-    $email_body = "Your order has left our shipping facility and will arrive within 3 business days.";
+    $email_subject = '';
+    $email_body = 'Your order has left our shipping facility and will arrive within 3 business days.';
     $email = new Email(
-        ["someuser@test.com"],
+        ['someuser@test.com'],
         $email_subject,
         $email_body
     );
-    $email->send();
+    echo $email->send();
 
-} catch (\Error $e) {
-    echo "An error occurred: " . $e->getMessage();
+} catch (Exception $e) {
+    echo 'An error occurred: ' . $e->getMessage();
 }
 
 
@@ -110,14 +115,14 @@ try {
 
 try {
 
-    $email_subject = "Error Notification";
-    $email_body = "Error connecting to database: incorrect username or password.";
+    $email_subject = 'Error Notification';
+    $email_body = 'Error connecting to database: incorrect username or password.';
     $email = new Email([]); // passed empty recipients array to trigger error
     $email
         ->setSubject($email_subject)
         ->setBody($email_body)
         ->send();
 
-} catch (\Error $e) {
-    echo "An error occurred: " . $e->getMessage();
+} catch (Exception $e) {
+    echo 'An error occurred: ' . $e->getMessage();
 }

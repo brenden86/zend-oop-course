@@ -1,0 +1,16 @@
+{
+    "name": "brendenk/zend-oop-course",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "ZendOopCourse\\Labs\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Brenden Koenigsman",
+            "email": "brenden.koenigsman@gmail.com"
+        }
+    ],
+    "require": {}
+}
