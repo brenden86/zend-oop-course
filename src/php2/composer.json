@@ -1,0 +1,20 @@
+{
+    "name": "Course Files",
+    "description": "Exampls from slides",
+    "keywords": [
+    	"PHP training"
+    ],
+    "homepage": "http://php-examples/",
+    "require": {
+        "php": ">=7.2",
+        "guzzlehttp/guzzle": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "php2\\": "src/"
+        }
+    }
+}

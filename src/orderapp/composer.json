@@ -1,0 +1,15 @@
+{
+    "name": "daryl/orderapp",
+    "description": "A simple order application",
+    "type": "project",
+    "require": {
+        "php": ">=7.4",
+        "monolog/monolog": "^2.2",
+        "guzzlehttp/guzzle": "^7.2"
+    },
+    "autoload": {
+        "psr-4": {
+          "orderapp\\": "src/"
+        }
+    }
+}

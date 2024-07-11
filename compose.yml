@@ -1,0 +1,45 @@
+
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - 8080:80
+    volumes:
+      - ./logs:/var/log/nginx
+      - ./src:/var/www/public
+      - ./server/nginx.conf:/etc/nginx/nginx.conf
+    restart: unless-stopped
+
+  php-fpm:
+    # install PHP & PDO extension
+    build:
+      context: .
+      dockerfile: ./pdo.Dockerfile
+    volumes:
+      - ./src:/var/www/public
+    restart: unless-stopped
+
+  database:
+    container_name: mariadb
+    image: mariadb
+    ports:
+      - "3306"
+    environment:
+      - MARIADB_USER=${DB_USER}
+      - MARIADB_PASSWORD=${DB_PASS}
+      - MARIADB_ROOT_PASSWORD=${DB_PASS}
+      - MARIADB_DATABASE=${DB_NAME}
+    volumes:
+      - database:/var/lib/mysql
+      # include DB backup in container
+      - ./database/phpcourse.sql:/var/lib/mysql/backup/phpcourse.sql
+    restart: unless-stopped
+
+  adminer:
+    image: adminer
+    restart: unless-stopped
+    ports:
+      - 8989:8080
+
+volumes:
+  database:
