@@ -1,5 +1,5 @@
 <?php
-namespace ZendCourse;
+namespace ZendOopCourse\Labs\Classes;
 
 use Exception;
 
