@@ -9,7 +9,7 @@ class BaseUser
 
     const PW_MIN_LENGTH = 6;
 
-    protected DateTime $createDate;
+    protected readonly DateTime $createDate;
     protected string $password;
 
     public function __construct(
