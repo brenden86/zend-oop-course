@@ -3,6 +3,7 @@
 namespace ZendOopCourse\Labs\Inheritance;
 
 use DateTime;
+use Exception;
 
 class BaseUser
 {
@@ -13,7 +14,7 @@ class BaseUser
     protected string $password;
 
     public function __construct(
-        protected string $username,
+        public string $username,
         string $password,
         public string $firstName = '',
         public string $lastName = ''
@@ -40,7 +41,7 @@ class BaseUser
     public function setPassword(string $password)
     {
         if(strlen($password) < self::PW_MIN_LENGTH) {
-            echo 'Password must be at least ' . self::PW_MIN_LENGTH . ' characters long';
+            throw new Exception('Password must be at least ' . self::PW_MIN_LENGTH . ' characters long');
         } else {
             $this->password = password_hash($password, PASSWORD_DEFAULT);
         }
@@ -56,5 +57,9 @@ class BaseUser
         $this->lastName = $newLastName;
     }
 
+	public function whatever(iterable $arr)
+	{
+		return implode(':', $arr);
+	}
 
 }

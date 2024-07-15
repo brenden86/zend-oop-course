@@ -17,20 +17,20 @@ $base->setFirstName('Marge');
 echo 'Base user NEW name: ' . $base->getFullName();
 echo PHP_EOL;
 
-$super->installSoftware('Photoshop');
-$super->installSoftware('PHPStorm');
-$super->installSoftware('Docker');
+$super->installSoftware('strtolower', 'strtolower');
+$super->installSoftware('get_date', function () { return date('Y-m-d'); } );
+$super->installSoftware('verify_password', new class () {
+	public function __invoke(string $password, string $hash)
+	{
+		return password_verify($password, $hash);
+	}
+});
 
 echo PHP_EOL;
 echo 'Super user installed software: ';
 echo PHP_EOL;
 
-print_r($super->getSoftware());
-echo PHP_EOL;
-
-$super->uninstallSoftware('Photoshop');
-echo 'Uninstalled Photoshop, new software list: ';
-print_r($super->getSoftware());
+echo $super->runSoftware('strtolower', 'TEST');
 echo PHP_EOL;
 
 echo PHP_EOL;
@@ -44,9 +44,8 @@ $admin->setUsernameForUser($super, 'newsuper');
 echo 'Admin changed Super Users\' username to: ' . $super->getUsername();
 echo PHP_EOL;
 
+echo $admin->username;
+echo PHP_EOL;
 
 
-
-
-
-
+echo new ReflectionObject($admin);

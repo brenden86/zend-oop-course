@@ -8,27 +8,30 @@ class SuperUser extends BaseUser
 {
     protected array $software = [];
 
-    public function installSoftware(string $pkgName) {
-        $package = strtolower($pkgName); // only dealing with lowercase in logic
-        if (in_array($package, $this->software)) {
-            echo $pkgName . ' is already installed.';
-        } else {
-            $this->software[] = strtolower($pkgName);
-        }
+    public function installSoftware(string $pkgName, callable $callback) {
+        $this->software[strtolower($pkgName)] = $callback;
     }
 
     public function uninstallSoftware(string $pkgName)
     {
-        $package = strtolower($pkgName); // only dealing with lowercase in logic
-        if (!in_array($package , $this->software)) {
+		if (empty($this->software[strtolower($pkgName)])) {
             echo $pkgName . ' was not found on this device.';
         } else {
-            unset($this->software[array_search($package, $this->software)]);
+            unset($this->software[strtolower($pkgName)]);
         }
     }
 
-    public function getSoftware()
+    public function getSoftware(string $key)
     {
-        return $this->software;
+        return $this->software[strtolower($key)] ?? NULL;
+    }
+
+    public function runSoftware(string $key, string $params)
+    {
+        if (isset($this->software[strtolower($key)])) {
+			return $this->software[strtolower($key)]($params);
+		} else {
+			return NULL;
+		}
     }
 }
